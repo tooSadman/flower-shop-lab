@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+	"github.com/tooSadman/flower-shop-lab/internal/flower"
 	"github.com/tooSadman/flower-shop-lab/internal/user"
 )
 
@@ -17,7 +18,15 @@ type Server struct {
 }
 
 func (s *Server) routes() {
+	s.Router.HandleFunc("/flowers", s.handleFlowersGet())
 	s.Router.HandleFunc("/users", s.handleUsersGet())
+}
+
+func (s *Server) handleFlowersGet() http.HandlerFunc {
+	flowers, _ := flower.AllFlowers(s.DB)
+	return func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(flowers)
+	}
 }
 
 func (s *Server) handleUsersGet() http.HandlerFunc {
