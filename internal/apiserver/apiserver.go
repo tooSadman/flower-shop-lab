@@ -3,6 +3,7 @@ package apiserver
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -23,6 +24,7 @@ func (s *Server) routes() {
 	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
+	s.Router.HandleFunc("/orders/create", s.handleOrderPost()).Methods("POST")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
 }
@@ -47,6 +49,21 @@ func (s *Server) handleOrdersGet() http.HandlerFunc {
 	orders, _ := order.AllOrders(s.DB)
 	return func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(orders)
+	}
+}
+
+func (s *Server) handleOrderPost() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		params := r.PostForm
+		flowerName := params.Get("flowerName")
+		customer := params.Get("customer")
+		price, _ := strconv.Atoi(params.Get("price"))
+		id, err := order.CreateOrder(s.DB, flowerName, customer, price)
+		if err != nil {
+			log.Fatalln(w, err)
+		}
+		fmt.Fprintf(w, "Order №%d was created!", id)
 	}
 }
 

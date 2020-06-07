@@ -47,7 +47,26 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 	return orders, err
 }
 
-func GetOrderById(id int, db *sql.DB) Order {
+func CreateOrder(
+	db *sql.DB,
+	flowerName string,
+	customer string,
+	price int,
+) (
+	int,
+	error,
+) {
+	var id int
+	err := db.QueryRow(`
+	INSERT INTO orders(flower_name, customer, price)
+	VALUES($1, $2, $3)
+	RETURNING id
+	`, flowerName, customer, price).Scan(&id)
+
+	return id, err
+}
+
+func GetOrderById(db *sql.DB, id int) Order {
 	var flowerName string
 	var customer string
 	var price int
