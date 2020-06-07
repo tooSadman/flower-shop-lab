@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	ID                 int
-	Email              string
-	Encrypted_password string
-	Username           string
+	ID                int
+	Email             string
+	EncryptedPassword string
+	Username          string
 }
 
 func AllUsers(db *sql.DB) ([]User, error) {
@@ -36,12 +36,35 @@ func AllUsers(db *sql.DB) ([]User, error) {
 			log.Fatal(err)
 		}
 		currentUser := User{
-			ID:                 id,
-			Email:              email,
-			Encrypted_password: encrypted_password,
-			Username:           username}
+			ID:                id,
+			Email:             email,
+			EncryptedPassword: encrypted_password,
+			Username:          username}
 		users = append(users, currentUser)
 	}
 
 	return users, err
+}
+
+func GetUser(id int, db *sql.DB) User {
+	var email string
+	var encrypted_password string
+	var username string
+
+	err := db.QueryRow(`
+	SELECT id, email, encrypted_password, username 
+	FROM users where id = $1
+	`, id,
+	).Scan(&id, &email, &encrypted_password, &username)
+	if err != nil {
+		log.Fatal(err)
+	}
+	user := User{
+		ID:                id,
+		Email:             email,
+		EncryptedPassword: encrypted_password,
+		Username:          username,
+	}
+
+	return user
 }

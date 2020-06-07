@@ -24,6 +24,7 @@ func (s *Server) routes() {
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
+	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
 }
 
 func (s *Server) handleFlowersGet() http.HandlerFunc {
@@ -53,6 +54,15 @@ func (s *Server) handleUsersGet() http.HandlerFunc {
 	users, _ := user.AllUsers(s.DB)
 	return func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(users)
+	}
+}
+
+func (s *Server) handleUserByIdGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		id, _ := strconv.Atoi(params["id"])
+		user := user.GetUser(id, s.DB)
+		json.NewEncoder(w).Encode(user)
 	}
 }
 
