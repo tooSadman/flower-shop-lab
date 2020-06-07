@@ -39,9 +39,33 @@ func AllFlowers(db *sql.DB) ([]Flower, error) {
 			ID:      id,
 			Name:    name,
 			Picture: picture,
-			Price:   price}
+			Price:   price,
+		}
 		flowers = append(flowers, currentFlower)
 	}
 
 	return flowers, err
+}
+
+func GetFlower(id int, db *sql.DB) Flower {
+	var name string
+	var picture string
+	var price int
+
+	err := db.QueryRow(`
+	SELECT id, flower_name, picture, price 
+	FROM flowers where id = $1
+	`, id,
+	).Scan(&id, &name, &picture, &price)
+	if err != nil {
+		log.Fatal(err)
+	}
+	flower := Flower{
+		ID:      id,
+		Name:    name,
+		Picture: picture,
+		Price:   price,
+	}
+
+	return flower
 }

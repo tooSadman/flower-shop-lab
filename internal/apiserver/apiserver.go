@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -20,6 +21,7 @@ type Server struct {
 
 func (s *Server) routes() {
 	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
+	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 }
@@ -28,6 +30,15 @@ func (s *Server) handleFlowersGet() http.HandlerFunc {
 	flowers, _ := flower.AllFlowers(s.DB)
 	return func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(flowers)
+	}
+}
+
+func (s *Server) handleFlowerByIdGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		id, _ := strconv.Atoi(params["id"])
+		flower := flower.GetFlower(id, s.DB)
+		json.NewEncoder(w).Encode(flower)
 	}
 }
 
