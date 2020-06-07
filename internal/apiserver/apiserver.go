@@ -19,9 +19,9 @@ type Server struct {
 }
 
 func (s *Server) routes() {
-	s.Router.HandleFunc("/flowers", s.handleFlowersGet())
-	s.Router.HandleFunc("/orders", s.handleFlowersGet())
-	s.Router.HandleFunc("/users", s.handleUsersGet())
+	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
+	s.Router.HandleFunc("/orders", s.handleFlowersGet()).Methods("GET")
+	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 }
 
 func (s *Server) handleFlowersGet() http.HandlerFunc {
