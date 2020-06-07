@@ -68,3 +68,26 @@ func GetUser(id int, db *sql.DB) User {
 
 	return user
 }
+
+func GetUserByEmail(email string, db *sql.DB) User {
+	var id int
+	var encrypted_password string
+	var username string
+
+	err := db.QueryRow(`
+	SELECT id, email, encrypted_password, username 
+	FROM users where email = $1
+	`, email,
+	).Scan(&id, &email, &encrypted_password, &username)
+	if err != nil {
+		log.Fatal(err)
+	}
+	user := User{
+		ID:                id,
+		Email:             email,
+		EncryptedPassword: encrypted_password,
+		Username:          username,
+	}
+
+	return user
+}
