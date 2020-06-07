@@ -1,14 +1,14 @@
 --Creating users tables
 create table users (
-  id serial not null,
+  id serial not null unique,
   email varchar not null primary key,
   encrypted_password varchar not null,
-  username varchar not null
+  username varchar not null unique
 );
 
 --Creating flowers table
 create table flowers (
-  id serial not null,
+  id serial not null unique,
   flower_name varchar not null primary key,
   picture varchar not null,
   price int not null
@@ -16,7 +16,7 @@ create table flowers (
 
 --Creating orders table
 create table orders (
-  id serial not null,
+  id serial not null unique,
   flower_name varchar references flowers(flower_name),
   customer varchar references users(email),
   price int not null
