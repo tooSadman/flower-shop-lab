@@ -47,6 +47,29 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 	return orders, err
 }
 
+func GetOrderById(id int, db *sql.DB) Order {
+	var flowerName string
+	var customer string
+	var price int
+
+	err := db.QueryRow(`
+	SELECT id, flower_name, customer, price 
+	FROM orders where id = $1
+	`, id,
+	).Scan(&id, &flowerName, &customer, &price)
+	if err != nil {
+		log.Fatal(err)
+	}
+	order := Order{
+		ID:         id,
+		FlowerName: flowerName,
+		Customer:   customer,
+		Price:      price,
+	}
+
+	return order
+}
+
 func GetOrderByCustomer(customer string, db *sql.DB) Order {
 	var id int
 	var flowerName string
