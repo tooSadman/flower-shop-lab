@@ -22,7 +22,7 @@ type Server struct {
 func (s *Server) routes() {
 	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
-	s.Router.HandleFunc("/orders", s.handleFlowersGet()).Methods("GET")
+	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
 }
