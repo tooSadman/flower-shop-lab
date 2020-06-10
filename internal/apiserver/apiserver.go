@@ -32,6 +32,7 @@ func (s *Server) routes() {
 func (s *Server) handleFlowersGet() http.HandlerFunc {
 	flowers, _ := flower.AllFlowers(s.DB)
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(flowers)
 	}
 }
