@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/BurntSushi/toml"
+	"github.com/gorilla/handlers"
 	"github.com/tooSadman/flower-shop-lab/internal/apiserver"
 	"github.com/tooSadman/flower-shop-lab/internal/configs"
 )
@@ -28,5 +29,8 @@ func main() {
 	}
 
 	server := apiserver.NewServer()
-	http.ListenAndServe(config.BindAddr, server.Router)
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	log.Fatal(http.ListenAndServe(config.BindAddr, handlers.CORS(originsOk, headersOk, methodsOk)(server.Router)))
 }
