@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/model/Orders.dart';
+import 'package:myapp/model/orders.dart';
 
 
 class OrdersPage extends StatelessWidget {

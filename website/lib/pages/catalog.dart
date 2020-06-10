@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/flower.dart';
 import 'package:myapp/pages/flower_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class CatalogPage extends StatelessWidget {
-  final List<Flower> _allFlowers = Flower.allFlowers();
+class CatalogPage extends StatefulWidget{
+  
+  @override
+  _CatalogPageState createState() => _CatalogPageState();
+}
 
-  CatalogPage() {}
+class _CatalogPageState extends State<CatalogPage> {
+  List<Flower> _allFlowers = []; 
+
+  Future<void> _updateList() async {
+    final response = await http.get('http://localhost:9000/flowers');
+    setState(() {
+      _allFlowers = (json.decode(response.body) as List).map((i) =>
+              Flower.fromJson(i)).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _updateList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +49,9 @@ class CatalogPage extends StatelessWidget {
         child: new Column(
       children: <Widget>[
         new ListTile(
-          leading: new Image.asset(
-            "assets/" + _allFlowers[index].image,
-            fit: BoxFit.cover,
+          leading: new Image.network(
+              _allFlowers[index].image,
+              fit: BoxFit.cover,
           ),
           title: new Text(
             _allFlowers[index].name,
@@ -42,7 +62,7 @@ class CatalogPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new SizedBox(height: 5),
-                new Text(_allFlowers[index].price,
+                new Text(_allFlowers[index].price.toString(),
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.normal)),
                 new SizedBox(height: 5),
