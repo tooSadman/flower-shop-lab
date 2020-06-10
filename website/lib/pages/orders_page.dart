@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/model/flower.dart';
-import 'package:myapp/pages/flower_page.dart';
+import 'package:myapp/model/Orders.dart';
 
-class CatalogPage extends StatelessWidget {
-  final List<Flower> _allFlowers = Flower.allFlowers();
 
-  CatalogPage() {}
+class OrdersPage extends StatelessWidget {
+  final List<Order> _allOrders = Order.allOrders();
+
+  OrdersPage();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Padding(
             padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-            child: getCatalogPageBody(context)));
+            child: getOrdersPageBody(context)));
   }
 
-  getCatalogPageBody(BuildContext context) {
+  getOrdersPageBody(BuildContext context) {
     return ListView.builder(
-      itemCount: _allFlowers.length,
+      itemCount: _allOrders.length,
       itemBuilder: _getItemUI,
       padding: EdgeInsets.all(10.0),
     );
@@ -29,12 +29,8 @@ class CatalogPage extends StatelessWidget {
         child: new Column(
       children: <Widget>[
         new ListTile(
-          leading: new Image.asset(
-            "assets/" + _allFlowers[index].image,
-            fit: BoxFit.cover,
-          ),
           title: new Text(
-            _allFlowers[index].name,
+            'Ви замовляли букет "${_allOrders[index].name}"',
             style: new TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
           ),
           subtitle: new Column(
@@ -42,23 +38,18 @@ class CatalogPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new SizedBox(height: 5),
-                new Text(_allFlowers[index].price,
+                new Text('Загальна ціна замовлення: ${_allOrders[index].price}',
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.normal)),
                 new SizedBox(height: 5),
-                new Text('Ідеально підходить для: ${_allFlowers[index].events}',
+                new Text('Дата замовлення: ${_allOrders[index].date}',
                     style: new TextStyle(
-                        fontSize: 14.0, fontWeight: FontWeight.normal)),
-                new SizedBox(height: 10),        
+                        fontSize: 14.0, fontStyle: FontStyle.italic)),     
               ]),
-          onTap: () => _onTapItem(context),
         )
       ],
     ));
   }
 
-void _onTapItem(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => FlowerDetails()));
-  }
+
 }

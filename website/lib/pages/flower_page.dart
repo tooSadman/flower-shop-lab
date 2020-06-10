@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/success_order.dart';
 
 
 class FlowerDetails extends StatefulWidget {
@@ -8,7 +9,7 @@ class FlowerDetails extends StatefulWidget {
 }
 
 class _FlowerDetailsState extends State<FlowerDetails> {
-  get position => null;
+  String _selectedText = "Упаковано в папір";
 
   @override
   Widget build(BuildContext context) {
@@ -16,47 +17,72 @@ class _FlowerDetailsState extends State<FlowerDetails> {
         appBar: AppBar(
           title: Text('Букет Сихівського Угодніка'),
         ),
-        body: SingleChildScrollView(
+        body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Image.asset(
-                "assets/logo.png",
-                fit: BoxFit.cover,
+                "assets/ava.png",
+                height: 200,
+                width: 200,
                 ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
-                      'Букет для: День Народження, Іменини, День Валентина',
+                      '600 грн.',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
+                          fontWeight: FontWeight.bold, fontSize: 18.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Ціна: 600 грн.'
+                      'Букет для: День Народження, Іменини, День Валентина'
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Ціна зі знижкою -20% для вашої картки "Дамскій угоднік": 400 грн.'
+                      'Ціна зі знижкою -20% при використанні картки "Gold": 480 грн.',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, color: Colors.orange),
                     ),
-                  ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: new DropdownButton<String>(
-                          items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                          hint: Text("Status"),
+                          value: _selectedText,
+                          items: <String>['Упаковано в папір', 'З бантиком', 'Зі стрічкою', 'Без упаковки'].map((String value) {
                           return new DropdownMenuItem<String>(
                           value: value,
                           child: new Text(value),
                     );
                     }).toList(),
-                    onChanged: (_) {},
+                    onChanged: (String val) {
+                    _selectedText = val;
+                    setState(() {
+                    _selectedText = val;
+                     });
+                    },
                     )
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      textColor: Colors.white,
+                      color: Colors.green,
+                      child: Text('Замовити'),
+                      onPressed: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SuccessOrder()),
+                       );
+                      },
+                    )),
                 ],
               ),
             ],

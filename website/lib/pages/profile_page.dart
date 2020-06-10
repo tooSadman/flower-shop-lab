@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/home_page.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -30,17 +31,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 3),
                         Text(
-                         "zibrov@gmail.com",
+                         "Тип картки: Gold",
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                         "Контакти:",
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                         "zibrov@gmail.com  |  +380938649229",
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
                           ),
                         ),
-                        SizedBox(height: 3),
                       ])
                       );
   }
-  
-
-
 }
+

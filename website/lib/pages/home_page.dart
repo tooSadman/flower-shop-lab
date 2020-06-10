@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/catalog.dart';
-import 'package:myapp/pages/profile.dart';
+import 'package:myapp/pages/messages_page.dart';
+import 'package:myapp/pages/profile_page.dart';
+import 'package:myapp/pages/signout.dart';
+import 'orders_page.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -13,14 +16,14 @@ class HomePage extends StatelessWidget {
         accentColor: Colors.greenAccent,
       ),
       home: DefaultTabController(
-        length: 4,
-        
+        length: 5,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.home)),
                 Tab(icon: Icon(Icons.person)),
+                Tab(icon: Icon(Icons.archive)),
                 Tab(icon: Icon(Icons.message)),
                 Tab(icon: Icon(Icons.exit_to_app)),
               ],
@@ -32,8 +35,9 @@ class HomePage extends StatelessWidget {
             children: [
               new CatalogPage(),
               new ProfileScreen(),
-              Icon(Icons.message),
-              Icon(Icons.message),
+              new OrdersPage(),
+              new MessagesPage(),
+              new SignOut(),
             ],
           ),
         ),

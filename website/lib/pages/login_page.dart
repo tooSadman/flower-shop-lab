@@ -10,7 +10,7 @@ class LoginSignupPage extends StatelessWidget {
           title: Text('Замовлення квітів "Марійчина квіточка"'),
         ),
         body: Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(horizontal: 300, vertical: 50),
             child: ListView(
               children: <Widget>[
                 Container(
