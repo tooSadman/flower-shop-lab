@@ -52,6 +52,8 @@ class _CatalogPageState extends State<CatalogPage> {
           leading: new Image.network(
               _allFlowers[index].image,
               fit: BoxFit.cover,
+              height: 60,
+               width: 60,
           ),
           title: new Text(
             _allFlowers[index].name,
