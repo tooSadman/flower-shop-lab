@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/success_order.dart';
+import 'package:myapp/model/flower.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 
 class FlowerDetails extends StatefulWidget {
+  FlowerDetails({Key key, this.id}) : super(key: key);
+
+  final int id;
 
   @override
   _FlowerDetailsState createState() => _FlowerDetailsState();
@@ -10,12 +16,31 @@ class FlowerDetails extends StatefulWidget {
 
 class _FlowerDetailsState extends State<FlowerDetails> {
   String _selectedText = "Упаковано в папір";
+  String _flowerName;
+  int _finalPrice;
+  Flower flower;
+
+  Future<void> _getFlower(int i) async {
+    final response = await http.get('http://localhost:9000/flowers/${widget.id}');
+    var parsedJson = json.decode(response.body);
+    setState(() {
+      flower = Flower.fromJson(parsedJson);
+      _flowerName = flower.name;
+      _finalPrice = (flower.price.toDouble() * 0.8).toInt();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getFlower(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Букет Сихівського Угодніка'),
+            title: Text(_flowerName),
         ),
         body: Center(
           child: Column(
@@ -24,15 +49,15 @@ class _FlowerDetailsState extends State<FlowerDetails> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Image.asset(
-                "assets/ava.png",
+                  Image.network(
+                flower.image,
                 height: 200,
                 width: 200,
                 ),
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      '600 грн.',
+                      flower.price.toString() + " грн",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 18.0),
                     ),
@@ -46,7 +71,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Ціна зі знижкою -20% при використанні картки "Gold": 480 грн.',
+                      'Ціна зі знижкою -20% при використанні картки "Gold": $_finalPrice грн.',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, color: Colors.orange),
                     ),

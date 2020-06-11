@@ -39,6 +39,7 @@ func (s *Server) handleFlowersGet() http.HandlerFunc {
 
 func (s *Server) handleFlowerByIdGet() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		params := mux.Vars(r)
 		id, _ := strconv.Atoi(params["id"])
 		flower := flower.GetFlower(id, s.DB)

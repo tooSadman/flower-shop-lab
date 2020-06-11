@@ -71,14 +71,14 @@ class _CatalogPageState extends State<CatalogPage> {
                         fontSize: 14.0, fontWeight: FontWeight.normal)),
                 new SizedBox(height: 10),        
               ]),
-          onTap: () => _onTapItem(context),
+          onTap: () => _onTapItem(context, index),
         )
       ],
     ));
   }
 
-void _onTapItem(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => FlowerDetails()));
+void _onTapItem(BuildContext context, int index) {
+  Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => FlowerDetails(id: _allFlowers[index].id)));
   }
 }
