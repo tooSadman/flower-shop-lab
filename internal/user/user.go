@@ -119,7 +119,7 @@ func GetCardByName(cardName string, db *sql.DB) Card {
 
 	err := db.QueryRow(`
 	SELECT id, card_name, discount 
-	FROM users where card_name = $1
+	FROM cards where card_name = $1
 	`, cardName,
 	).Scan(&id, &cardName, &discount)
 	if err != nil {

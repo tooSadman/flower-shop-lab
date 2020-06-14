@@ -21,7 +21,7 @@ type Server struct {
 }
 
 func (s *Server) routes() {
-	s.Router.HandleFunc("/flowers/{cardName}", s.handleCardByName()).Methods("GET")
+	s.Router.HandleFunc("/cards/{cardName}", s.handleCardByName()).Methods("GET")
 	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
