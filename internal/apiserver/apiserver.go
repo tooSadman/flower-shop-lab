@@ -61,7 +61,18 @@ func (s *Server) handleOrderPost() http.HandlerFunc {
 		flowerName := params.Get("flowerName")
 		customer := params.Get("customer")
 		price, _ := strconv.Atoi(params.Get("price"))
-		id, err := order.CreateOrder(s.DB, flowerName, customer, price)
+		createDate := params.Get("createDate")
+		packing := params.Get("packing")
+		delivery := params.Get("delivery")
+		id, err := order.CreateOrder(
+			s.DB,
+			flowerName,
+			customer,
+			price,
+			createDate,
+			packing,
+			delivery,
+		)
 		if err != nil {
 			log.Fatalln(w, err)
 		}
