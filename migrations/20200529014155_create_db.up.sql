@@ -1,9 +1,17 @@
+--Creating cards table
+create table cards (
+  id serial not null unique,
+  card_name varchar not null primary key,
+  discount NUMERIC (2, 1) not null
+);
+
 --Creating users tables
 create table users (
   id serial not null unique,
   email varchar not null primary key,
   encrypted_password varchar not null,
-  username varchar not null unique
+  username varchar not null unique,
+  card varchar references cards(card_name)
 );
 
 --Creating flowers table
@@ -25,14 +33,22 @@ create table orders (
   delivery varchar
 );
 
+--Inserting values into table cards
+insert into cards 
+  (id, card_name, discount)
+values
+  (1, 'Silver', 0.9),
+  (2, 'Gold', 0.8),
+  (3, 'Premium', 0.6);
+
 --Inserting values into table users
 insert into users 
-  (id, email, encrypted_password, username)
+  (id, email, encrypted_password, username, card)
 values
-  (1, 'john@gmail.com', 'john', 'john'),
-  (2, 'stashkiv@gmail.com', 'stashkiv', 'stashkiv'),
-  (3, 'fufelok@dasdasd', 'yurii', 'yurii'),
-  (4, 'mykola@gmail.com', 'mykola', 'mykola');
+  (1, 'john@gmail.com', 'john', 'john', 'Silver'),
+  (2, 'stashkiv@gmail.com', 'stashkiv', 'stashkiv', 'Gold'),
+  (3, 'fufelok@dasdasd', 'yurii', 'yurii', 'Silver'),
+  (4, 'mykola@gmail.com', 'mykola', 'mykola', 'Premium');
  
 
 --Inserting values into table flowers
