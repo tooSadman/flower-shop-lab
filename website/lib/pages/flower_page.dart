@@ -43,6 +43,10 @@ class _FlowerDetailsState extends State<FlowerDetails> {
     });
   }
 
+  Future<void> _postOrder() async {
+    final response = await http.post('http://localhost:9000/orders/create?flowerName=${flower.name}&customer=${widget.user.email}&price=${_finalPrice}&packing=${_packingText}&delivery=${_deliveryText}');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +139,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
                       color: Colors.green,
                       child: Text('Замовити'),
                       onPressed: () {
+                        _postOrder();
                         Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SuccessOrder()),
