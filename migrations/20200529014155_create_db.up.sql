@@ -19,7 +19,10 @@ create table orders (
   id serial not null unique,
   flower_name varchar references flowers(flower_name),
   customer varchar references users(email),
-  price int not null
+  price int not null,
+  create_date date,
+  packing varchar,
+  delivery varchar
 );
 
 --Inserting values into table users

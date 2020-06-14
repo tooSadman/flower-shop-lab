@@ -12,13 +12,17 @@ type Order struct {
 	FlowerName string
 	Customer   string
 	Price      int
+	CreateDate string
+	Packing    string
+	Delivery   string
 }
 
 func AllOrders(db *sql.DB) ([]Order, error) {
 	orders := []Order{}
 
 	rows, err := db.Query(`
-	SELECT id, flower_name, customer, price 
+	SELECT id, flower_name, customer, price, create_date,
+	packing, delivery
 	FROM orders order by id
 	`)
 	defer rows.Close()
@@ -30,8 +34,19 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 		var flowerName string
 		var customer string
 		var price int
+		var createDate string
+		var packing string
+		var delivery string
 
-		err = rows.Scan(&id, &flowerName, &customer, &price)
+		err = rows.Scan(
+			&id,
+			&flowerName,
+			&customer,
+			&price,
+			&createDate,
+			&packing,
+			&delivery,
+		)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -40,6 +55,9 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 			FlowerName: flowerName,
 			Customer:   customer,
 			Price:      price,
+			CreateDate: createDate,
+			Packing:    packing,
+			Delivery:   delivery,
 		}
 		orders = append(orders, currentOrder)
 	}
@@ -52,16 +70,20 @@ func CreateOrder(
 	flowerName string,
 	customer string,
 	price int,
+	createDate string,
+	packing string,
+	delivery string,
 ) (
 	int,
 	error,
 ) {
 	var id int
 	err := db.QueryRow(`
-	INSERT INTO orders(flower_name, customer, price)
+	INSERT INTO orders(flower_name, customer, price,
+	create_date, packing, delivery)
 	VALUES($1, $2, $3)
 	RETURNING id
-	`, flowerName, customer, price).Scan(&id)
+	`, flowerName, customer, price, createDate, packing, delivery).Scan(&id)
 
 	return id, err
 }
@@ -70,12 +92,24 @@ func GetOrderById(db *sql.DB, id int) Order {
 	var flowerName string
 	var customer string
 	var price int
+	var createDate string
+	var packing string
+	var delivery string
 
 	err := db.QueryRow(`
-	SELECT id, flower_name, customer, price 
+	SELECT id, flower_name, customer, price,
+	create_date, packing, delivery
 	FROM orders where id = $1
 	`, id,
-	).Scan(&id, &flowerName, &customer, &price)
+	).Scan(
+		&id,
+		&flowerName,
+		&customer,
+		&price,
+		&createDate,
+		&packing,
+		&delivery,
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,6 +118,9 @@ func GetOrderById(db *sql.DB, id int) Order {
 		FlowerName: flowerName,
 		Customer:   customer,
 		Price:      price,
+		CreateDate: createDate,
+		Packing:    packing,
+		Delivery:   delivery,
 	}
 
 	return order
@@ -93,12 +130,24 @@ func GetOrderByCustomer(customer string, db *sql.DB) Order {
 	var id int
 	var flowerName string
 	var price int
+	var createDate string
+	var packing string
+	var delivery string
 
 	err := db.QueryRow(`
-	SELECT id, flower_name, customer, price 
+	SELECT id, flower_name, customer, price, 
+	create_date, packing, delivery
 	FROM orders where customer = $1
 	`, customer,
-	).Scan(&id, &flowerName, &customer, &price)
+	).Scan(
+		&id,
+		&flowerName,
+		&customer,
+		&price,
+		&createDate,
+		&packing,
+		&delivery,
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -107,6 +156,9 @@ func GetOrderByCustomer(customer string, db *sql.DB) Order {
 		FlowerName: flowerName,
 		Customer:   customer,
 		Price:      price,
+		CreateDate: createDate,
+		Packing:    packing,
+		Delivery:   delivery,
 	}
 
 	return order
