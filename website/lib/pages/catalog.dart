@@ -64,9 +64,9 @@ class _CatalogPageState extends State<CatalogPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new SizedBox(height: 5),
-                new Text(_allFlowers[index].price.toString(),
+                new Text("Ціна: " + _allFlowers[index].price.toString() + " грн.",
                     style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.normal)),
+                        fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black)),
                 new SizedBox(height: 5),
                 new Text('Ідеально підходить для: ${_allFlowers[index].events}',
                     style: new TextStyle(
