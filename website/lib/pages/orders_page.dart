@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/orders.dart';
 import 'package:myapp/model/user.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class OrdersPage extends StatefulWidget {
   OrdersPage({Key key, this.user}) : super(key: key);
@@ -11,7 +13,21 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  final List<Order> _allOrders = Order.allOrders();
+  List<Order> _allOrders = []; 
+
+  Future<void> _getOrders() async {
+    final response = await http.get('http://localhost:9000/orders/${widget.user.id}');
+    setState(() {
+      _allOrders = (json.decode(response.body) as List).map((i) =>
+              Order.fromJson(i)).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +52,7 @@ class _OrdersPageState extends State<OrdersPage> {
       children: <Widget>[
         new ListTile(
           title: new Text(
-            'Ви замовляли букет "${_allOrders[index].name}"',
+            'Ви замовляли букет "${_allOrders[index].flowerName}"',
             style: new TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold),
           ),
           subtitle: new Column(
@@ -48,7 +64,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     style: new TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.normal)),
                 new SizedBox(height: 5),
-                new Text('Дата замовлення: ${_allOrders[index].date}',
+                new Text('Дата замовлення: ${_allOrders[index].createDate}',
                     style: new TextStyle(
                         fontSize: 14.0, fontStyle: FontStyle.italic)),     
               ]),

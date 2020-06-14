@@ -1,19 +1,31 @@
 class Order {
 
-  //--- Name Of Order
-  final String name;
-  //-- image
-  final String date;
-   //--- price
-  final String price;
+  //--- order id
+  final int id;
+  //--- FlowerName
+  final String flowerName;
+  //-- Customer
+  final int customer;
+  //--- price
+  final int price;
+  //--- CreateDate
+  final String createDate;
+  //--- Packing
+  final String packing;
+  //--- Delivery
+  final String delivery;
 
-  Order({this.name,this.price,this.date});
+  Order({this.id,this.flowerName,this.customer,this.price,this.createDate,this.packing,this.delivery});
 
-  static List<Order> allOrders()
-  {
-    var lstOfOrders = new List<Order>();
-    lstOfOrders.add(new Order(name:"Букет Сихівського Угодніка",price: "600 грн.",date: "08.06.2020"));
-    lstOfOrders.add(new Order(name:"Рясне на виїзді",price: "250 грн.",date: "06.06.2020"));
-    return lstOfOrders;
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      id: json['ID'],
+      flowerName: json['FlowerName'],
+      customer: json['Customer'],
+      price: json['Price'],
+      createDate: json['CreateDate'],
+      packing: json['Packing'],
+      delivery: json['Delivery'],
+    );
   }
 }

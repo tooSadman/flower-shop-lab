@@ -44,7 +44,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
   }
 
   Future<void> _postOrder() async {
-    final response = await http.post('http://localhost:9000/orders/create?flowerName=${flower.name}&customer=${widget.user.email}&price=${_finalPrice}&packing=${_packingText}&delivery=${_deliveryText}');
+    final response = await http.post('http://localhost:9000/orders/create?flowerName=${flower.name}&customer=${widget.user.id}&price=${_finalPrice}&packing=${_packingText}&delivery=${_deliveryText}');
   }
 
   @override
