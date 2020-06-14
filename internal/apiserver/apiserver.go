@@ -21,12 +21,23 @@ type Server struct {
 }
 
 func (s *Server) routes() {
+	s.Router.HandleFunc("/flowers/{cardName}", s.handleCardByName()).Methods("GET")
 	s.Router.HandleFunc("/flowers", s.handleFlowersGet()).Methods("GET")
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
 	s.Router.HandleFunc("/orders/create", s.handleOrderPost()).Methods("POST")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
+}
+
+func (s *Server) handleCardByName() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		params := mux.Vars(r)
+		cardName := params["cardName"]
+		card := user.GetCardByName(cardName, s.DB)
+		json.NewEncoder(w).Encode(card)
+	}
 }
 
 func (s *Server) handleFlowersGet() http.HandlerFunc {
