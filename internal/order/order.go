@@ -82,7 +82,7 @@ func CreateOrder(
 	err := db.QueryRow(`
 	INSERT INTO orders(flower_name, customer, price,
 	create_date, packing, delivery)
-	VALUES($1, $2, $3)
+	VALUES($1, $2, $3, $4, $5, $6)
 	RETURNING id
 	`, flowerName,
 		customer,

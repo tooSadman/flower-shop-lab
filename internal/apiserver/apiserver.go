@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+	log "github.com/sirupsen/logrus"
 	"github.com/tooSadman/flower-shop-lab/internal/flower"
 	"github.com/tooSadman/flower-shop-lab/internal/order"
 	"github.com/tooSadman/flower-shop-lab/internal/user"
@@ -68,8 +68,7 @@ func (s *Server) handleOrdersGet() http.HandlerFunc {
 
 func (s *Server) handleOrderPost() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
-		params := r.PostForm
+		params := r.URL.Query()
 		flowerName := params.Get("flowerName")
 		customer := params.Get("customer")
 		price, _ := strconv.Atoi(params.Get("price"))
@@ -84,7 +83,7 @@ func (s *Server) handleOrderPost() http.HandlerFunc {
 			delivery,
 		)
 		if err != nil {
-			log.Fatalln(w, err)
+			log.Warn(w, err)
 		}
 		fmt.Fprintf(w, "Order №%d was created!", id)
 	}
