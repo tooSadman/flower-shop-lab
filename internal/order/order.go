@@ -3,6 +3,7 @@ package order
 import (
 	"database/sql"
 	"log"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -12,7 +13,7 @@ type Order struct {
 	FlowerName string
 	Customer   string
 	Price      int
-	CreateDate string
+	CreateDate time.Time
 	Packing    string
 	Delivery   string
 }
@@ -34,7 +35,7 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 		var flowerName string
 		var customer string
 		var price int
-		var createDate string
+		var createDate time.Time
 		var packing string
 		var delivery string
 
@@ -70,7 +71,7 @@ func CreateOrder(
 	flowerName string,
 	customer string,
 	price int,
-	createDate string,
+	createDate time.Time,
 	packing string,
 	delivery string,
 ) (
@@ -92,7 +93,7 @@ func GetOrderById(db *sql.DB, id int) Order {
 	var flowerName string
 	var customer string
 	var price int
-	var createDate string
+	var createDate time.Time
 	var packing string
 	var delivery string
 
@@ -130,7 +131,7 @@ func GetOrderByCustomer(customer string, db *sql.DB) Order {
 	var id int
 	var flowerName string
 	var price int
-	var createDate string
+	var createDate time.Time
 	var packing string
 	var delivery string
 
