@@ -62,7 +62,7 @@ func AllUsers(db *sql.DB) ([]User, error) {
 	return users, err
 }
 
-func GetUser(id int, db *sql.DB) User {
+func GetUserByID(id int, db *sql.DB) User {
 	var email string
 	var encrypted_password string
 	var username string

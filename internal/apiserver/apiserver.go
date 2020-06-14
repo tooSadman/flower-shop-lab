@@ -80,7 +80,7 @@ func (s *Server) handleUserByIdGet() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
 		id, _ := strconv.Atoi(params["id"])
-		user := user.GetUser(id, s.DB)
+		user := user.GetUserByID(id, s.DB)
 		json.NewEncoder(w).Encode(user)
 	}
 }
