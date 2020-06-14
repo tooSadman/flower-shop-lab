@@ -26,7 +26,7 @@ create table flowers (
 create table orders (
   id serial not null unique,
   flower_name varchar references flowers(flower_name),
-  customer varchar references users(email),
+  customer int references users(id),
   price int not null,
   create_date date,
   packing varchar,

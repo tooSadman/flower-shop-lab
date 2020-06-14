@@ -2,6 +2,7 @@ package order
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -11,7 +12,7 @@ import (
 type Order struct {
 	ID         int
 	FlowerName string
-	Customer   string
+	Customer   int
 	Price      int
 	CreateDate time.Time
 	Packing    string
@@ -33,7 +34,7 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 	for rows.Next() {
 		var id int
 		var flowerName string
-		var customer string
+		var customer int
 		var price int
 		var createDate time.Time
 		var packing string
@@ -69,7 +70,7 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 func CreateOrder(
 	db *sql.DB,
 	flowerName string,
-	customer string,
+	customer int,
 	price int,
 	packing string,
 	delivery string,
@@ -97,7 +98,7 @@ func CreateOrder(
 
 func GetOrderById(db *sql.DB, id int) Order {
 	var flowerName string
-	var customer string
+	var customer int
 	var price int
 	var createDate time.Time
 	var packing string
@@ -133,40 +134,52 @@ func GetOrderById(db *sql.DB, id int) Order {
 	return order
 }
 
-func GetOrderByCustomer(customer string, db *sql.DB) Order {
-	var id int
-	var flowerName string
-	var price int
-	var createDate time.Time
-	var packing string
-	var delivery string
+func GetOrdersByCustomer(customer int, db *sql.DB) []Order {
+	orders := []Order{}
 
-	err := db.QueryRow(`
+	query := fmt.Sprintf(`
 	SELECT id, flower_name, customer, price, 
 	create_date, packing, delivery
-	FROM orders where customer = $1
-	`, customer,
-	).Scan(
-		&id,
-		&flowerName,
-		&customer,
-		&price,
-		&createDate,
-		&packing,
-		&delivery,
-	)
+	FROM orders where customer = %d
+	`, customer)
+	rows, err := db.Query(query)
+	defer rows.Close()
 	if err != nil {
 		log.Warn(err)
 	}
-	order := Order{
-		ID:         id,
-		FlowerName: flowerName,
-		Customer:   customer,
-		Price:      price,
-		CreateDate: createDate,
-		Packing:    packing,
-		Delivery:   delivery,
+
+	for rows.Next() {
+		var id int
+		var flowerName string
+		var price int
+		var createDate time.Time
+		var packing string
+		var delivery string
+
+		err = rows.Scan(
+			&id,
+			&flowerName,
+			&customer,
+			&price,
+			&createDate,
+			&packing,
+			&delivery,
+		)
+		if err != nil {
+			log.Warn(err)
+		}
+		currentOrder := Order{
+			ID:         id,
+			FlowerName: flowerName,
+			Customer:   customer,
+			Price:      price,
+			CreateDate: createDate,
+			Packing:    packing,
+			Delivery:   delivery,
+		}
+		orders = append(orders, currentOrder)
+
 	}
 
-	return order
+	return orders
 }

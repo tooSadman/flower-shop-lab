@@ -26,6 +26,7 @@ func (s *Server) routes() {
 	s.Router.HandleFunc("/flowers/{id}", s.handleFlowerByIdGet()).Methods("GET")
 	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
 	s.Router.HandleFunc("/orders/create", s.handleOrderPost()).Methods("POST")
+	s.Router.HandleFunc("/orders/{customer}", s.handleOrdersByCustomerGet()).Methods("GET")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{email}", s.handleUserByEmailGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
@@ -66,11 +67,21 @@ func (s *Server) handleOrdersGet() http.HandlerFunc {
 	}
 }
 
+func (s *Server) handleOrdersByCustomerGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		params := mux.Vars(r)
+		customer, _ := strconv.Atoi(params["customer"])
+		orders := order.GetOrdersByCustomer(customer, s.DB)
+		json.NewEncoder(w).Encode(orders)
+	}
+}
+
 func (s *Server) handleOrderPost() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params := r.URL.Query()
 		flowerName := params.Get("flowerName")
-		customer := params.Get("customer")
+		customer, _ := strconv.Atoi(params.Get("customer"))
 		price, _ := strconv.Atoi(params.Get("price"))
 		packing := params.Get("packing")
 		delivery := params.Get("delivery")
