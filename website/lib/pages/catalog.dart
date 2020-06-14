@@ -85,6 +85,6 @@ class _CatalogPageState extends State<CatalogPage> {
 
 void _onTapItem(BuildContext context, int index) {
   Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => FlowerDetails(id: _allFlowers[index].id)));
+          builder: (BuildContext context) => FlowerDetails(id: _allFlowers[index].id, user: widget.user)));
   }
 }

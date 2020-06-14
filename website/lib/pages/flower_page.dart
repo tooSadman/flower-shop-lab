@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/success_order.dart';
 import 'package:myapp/model/flower.dart';
+import 'package:myapp/model/userCard.dart';
+import 'package:myapp/model/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
 class FlowerDetails extends StatefulWidget {
-  FlowerDetails({Key key, this.id}) : super(key: key);
+  FlowerDetails({Key key, this.id, this.user}) : super(key: key);
 
   final int id;
+  final User user;
 
   @override
   _FlowerDetailsState createState() => _FlowerDetailsState();
@@ -20,21 +23,31 @@ class _FlowerDetailsState extends State<FlowerDetails> {
   String _flowerName;
   int _finalPrice;
   Flower flower;
+  UserCard card;
 
-  Future<void> _getFlower(int i) async {
+  Future<void> _getCard() async {
+    final response = await http.get('http://localhost:9000/cards/${widget.user.card}');
+    var parsedJson = json.decode(response.body);
+    setState(() {
+      card = UserCard.fromJson(parsedJson);
+    });
+  }
+
+  Future<void> _getFlower() async {
     final response = await http.get('http://localhost:9000/flowers/${widget.id}');
     var parsedJson = json.decode(response.body);
     setState(() {
       flower = Flower.fromJson(parsedJson);
       _flowerName = flower.name;
-      _finalPrice = (flower.price.toDouble() * 0.8).toInt();
+      _finalPrice = (flower.price.toDouble() * card.discount).toInt();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getFlower(widget.id);
+    _getCard();
+    _getFlower();
   }
 
   @override
