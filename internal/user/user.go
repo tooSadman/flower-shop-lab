@@ -111,3 +111,24 @@ func GetUserByEmail(email string, db *sql.DB) User {
 
 	return user
 }
+
+func GetCardByName(cardName string, db *sql.DB) Card {
+	var id int
+	var discount float64
+
+	err := db.QueryRow(`
+	SELECT id, card_name, discount 
+	FROM users where card_name = $1
+	`, cardName,
+	).Scan(&id, &cardName, &discount)
+	if err != nil {
+		log.Fatal(err)
+	}
+	card := Card{
+		ID:       id,
+		CardName: cardName,
+		Discount: discount,
+	}
+
+	return card
+}
