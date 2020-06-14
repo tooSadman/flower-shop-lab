@@ -27,6 +27,7 @@ func (s *Server) routes() {
 	s.Router.HandleFunc("/orders", s.handleOrdersGet()).Methods("GET")
 	s.Router.HandleFunc("/orders/create", s.handleOrderPost()).Methods("POST")
 	s.Router.HandleFunc("/users", s.handleUsersGet()).Methods("GET")
+	s.Router.HandleFunc("/users/{email}", s.handleUserByEmailGet()).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", s.handleUserByIdGet()).Methods("GET")
 }
 
@@ -72,7 +73,6 @@ func (s *Server) handleOrderPost() http.HandlerFunc {
 		flowerName := params.Get("flowerName")
 		customer := params.Get("customer")
 		price, _ := strconv.Atoi(params.Get("price"))
-		createDate := params.Get("createDate")
 		packing := params.Get("packing")
 		delivery := params.Get("delivery")
 		id, err := order.CreateOrder(
@@ -80,7 +80,6 @@ func (s *Server) handleOrderPost() http.HandlerFunc {
 			flowerName,
 			customer,
 			price,
-			createDate,
 			packing,
 			delivery,
 		)
@@ -103,6 +102,15 @@ func (s *Server) handleUserByIdGet() http.HandlerFunc {
 		params := mux.Vars(r)
 		id, _ := strconv.Atoi(params["id"])
 		user := user.GetUserByID(id, s.DB)
+		json.NewEncoder(w).Encode(user)
+	}
+}
+
+func (s *Server) handleUserByEmailGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		email := params["email"]
+		user := user.GetUserByEmail(email, s.DB)
 		json.NewEncoder(w).Encode(user)
 	}
 }
