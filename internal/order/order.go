@@ -71,7 +71,6 @@ func CreateOrder(
 	flowerName string,
 	customer string,
 	price int,
-	createDate time.Time,
 	packing string,
 	delivery string,
 ) (
@@ -79,12 +78,19 @@ func CreateOrder(
 	error,
 ) {
 	var id int
+	createDate := time.Now()
 	err := db.QueryRow(`
 	INSERT INTO orders(flower_name, customer, price,
 	create_date, packing, delivery)
 	VALUES($1, $2, $3)
 	RETURNING id
-	`, flowerName, customer, price, createDate, packing, delivery).Scan(&id)
+	`, flowerName,
+		customer,
+		price,
+		createDate.Format("2006-01-2"),
+		packing,
+		delivery,
+	).Scan(&id)
 
 	return id, err
 }
