@@ -1,0 +1,12 @@
+FROM ruby
+RUN apt-get update && gem install rails schema_to_scaffold && apt-get -y install xclip nodejs npm && npm install -g yarn \
+&& rails new flowershop --database=postgresql --webpack=react
+WORKDIR /flowershop
+COPY pg.yml config/database.yml
+RUN rails db:schema:dump
+&&  echo * > scaffold -c -p db/schema.rb \ 
+&& rails generate scaffold Flower id:serial picture:string price:integer \
+&& rails generate scaffold Order id:serial flower_name:string customer:string price:integer \
+&& rails generate scaffold User id:serial encrypted_password:string username:string \
+&& rm -rf db/migrate
+CMD rails server -b 0.0.0.0 --port 3000
