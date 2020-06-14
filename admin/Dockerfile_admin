@@ -8,5 +8,6 @@ RUN rails db:schema:dump
 && rails generate scaffold Flower id:serial picture:string price:integer \
 && rails generate scaffold Order id:serial flower_name:string customer:string price:integer \
 && rails generate scaffold User id:serial encrypted_password:string username:string \
+&& rails generate scaffold Card id:serial discount:decimal \
 && rm -rf db/migrate
 CMD rails server -b 0.0.0.0 --port 3000
