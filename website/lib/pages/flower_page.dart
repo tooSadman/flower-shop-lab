@@ -15,7 +15,8 @@ class FlowerDetails extends StatefulWidget {
 }
 
 class _FlowerDetailsState extends State<FlowerDetails> {
-  String _selectedText = "Упаковано в папір";
+  String _packingText = "Упаковано в папір";
+  String _deliveryText = "З доставкою";
   String _flowerName;
   int _finalPrice;
   Flower flower;
@@ -80,7 +81,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
                     padding: const EdgeInsets.all(8.0),
                     child: new DropdownButton<String>(
                           hint: Text("Status"),
-                          value: _selectedText,
+                          value: _packingText,
                           items: <String>['Упаковано в папір', 'З бантиком', 'Зі стрічкою', 'Без упаковки'].map((String value) {
                           return new DropdownMenuItem<String>(
                           value: value,
@@ -88,9 +89,28 @@ class _FlowerDetailsState extends State<FlowerDetails> {
                     );
                     }).toList(),
                     onChanged: (String val) {
-                    _selectedText = val;
+                    _packingText = val;
                     setState(() {
-                    _selectedText = val;
+                    _packingText = val;
+                     });
+                    },
+                    )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new DropdownButton<String>(
+                          hint: Text("Status"),
+                          value: _deliveryText,
+                          items: <String>['З доставкою', 'Самовивіз'].map((String value) {
+                          return new DropdownMenuItem<String>(
+                          value: value,
+                          child: new Text(value),
+                    );
+                    }).toList(),
+                    onChanged: (String val) {
+                    _deliveryText = val;
+                    setState(() {
+                    _deliveryText = val;
                      });
                     },
                     )

@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/home_page.dart';
+import 'package:myapp/model/user.dart';
 
 
 class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key key, this.user}) : super(key: key);
+
+  final User user;
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+//  User user; 
+//
+//  Future<void> _getUser() async {
+//    final response = await http.get('http://localhost:9000/users');
+//    setState(() {
+//      _allFlowers = (json.decode(response.body) as List).map((i) =>
+//              Flower.fromJson(i)).toList();
+//    });
+//  }
+//
+//  @override
+//  void initState() {
+//    super.initState();
+//    _updateList();
+//  }
+//
+//
+
   @override
   Widget build(BuildContext context) {
               return Container(
@@ -23,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                         "Павло Зібров",
+                         widget.user.username,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 22,
@@ -31,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 3),
                         Text(
-                         "Тип картки: Gold",
+                         "Тип картки: " + widget.user.card,
                           style: TextStyle(
                             color: Colors.orange,
                             fontWeight: FontWeight.bold,
@@ -47,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Text(
-                         "zibrov@gmail.com  |  +380938649229",
+                         widget.user.email,
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
@@ -57,4 +79,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
   }
 }
-

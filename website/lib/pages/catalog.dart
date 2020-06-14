@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/flower.dart';
+import 'package:myapp/model/user.dart';
 import 'package:myapp/pages/flower_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CatalogPage extends StatefulWidget{
+  CatalogPage({Key key, this.user}) : super(key: key);
+
+  final User user;
   
   @override
   _CatalogPageState createState() => _CatalogPageState();

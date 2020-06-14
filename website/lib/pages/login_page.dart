@@ -2,8 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:myapp/pages/home_page.dart';
 import 'package:myapp/pages/signup_page.dart';
 
+class LoginSignupPage extends StatefulWidget {
+  @override
+  _LoginSignupPageState createState() => _LoginSignupPageState();
+}
 
-class LoginSignupPage extends StatelessWidget {
+class _LoginSignupPageState extends State<LoginSignupPage> {
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +40,7 @@ class LoginSignupPage extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
@@ -34,6 +50,7 @@ class LoginSignupPage extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
                   child: TextField(
+                    controller: passController,
                     obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -51,7 +68,7 @@ class LoginSignupPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => HomePage(email: emailController.text, pass: passController.text)),
                        );
                       },
                     )),

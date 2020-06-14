@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/orders.dart';
+import 'package:myapp/model/user.dart';
 
+class OrdersPage extends StatefulWidget {
+  OrdersPage({Key key, this.user}) : super(key: key);
 
-class OrdersPage extends StatelessWidget {
+  final User user;
+  @override
+  _OrdersPageState createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
   final List<Order> _allOrders = Order.allOrders();
-
-  OrdersPage();
 
   @override
   Widget build(BuildContext context) {

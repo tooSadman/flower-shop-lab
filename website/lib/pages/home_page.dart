@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/model/user.dart';
 import 'package:myapp/pages/catalog.dart';
 import 'package:myapp/pages/messages_page.dart';
 import 'package:myapp/pages/profile_page.dart';
 import 'package:myapp/pages/signout.dart';
 import 'orders_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.email, this.pass}) : super(key: key);
 
-class HomePage extends StatelessWidget {
+  final String email;
+  final String pass;
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _userId;
+  User user;
+
+  Future<void> _getUser() async {
+    final response = await http.get('http://localhost:9000/users/${widget.email}');
+    var parsedJson = json.decode(response.body);
+    setState(() {
+      user = User.fromJson(parsedJson);
+      _userId = user.id;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,9 +63,9 @@ class HomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              new CatalogPage(),
-              new ProfileScreen(),
-              new OrdersPage(),
+              new CatalogPage(user: user),
+              new ProfileScreen(user: user),
+              new OrdersPage(user: user),
               new MessagesPage(),
               new SignOut(),
             ],
