@@ -2,9 +2,9 @@ package flower
 
 import (
 	"database/sql"
-	"log"
 
 	_ "github.com/lib/pq"
+	log "github.com/sirupsen/logrus"
 )
 
 type Flower struct {
@@ -33,7 +33,7 @@ func AllFlowers(db *sql.DB) ([]Flower, error) {
 
 		err = rows.Scan(&id, &name, &picture, &price)
 		if err != nil {
-			log.Fatal(err)
+			log.Warn(err)
 		}
 		currentFlower := Flower{
 			ID:      id,
@@ -58,7 +58,7 @@ func GetFlower(id int, db *sql.DB) Flower {
 	`, id,
 	).Scan(&id, &name, &picture, &price)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	flower := Flower{
 		ID:      id,
@@ -81,7 +81,7 @@ func GetFlowerByName(name string, db *sql.DB) Flower {
 	`, name,
 	).Scan(&id, &name, &picture, &price)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	flower := Flower{
 		ID:      id,

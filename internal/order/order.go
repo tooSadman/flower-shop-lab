@@ -2,10 +2,10 @@ package order
 
 import (
 	"database/sql"
-	"log"
 	"time"
 
 	_ "github.com/lib/pq"
+	log "github.com/sirupsen/logrus"
 )
 
 type Order struct {
@@ -49,7 +49,7 @@ func AllOrders(db *sql.DB) ([]Order, error) {
 			&delivery,
 		)
 		if err != nil {
-			log.Fatal(err)
+			log.Warn(err)
 		}
 		currentOrder := Order{
 			ID:         id,
@@ -118,7 +118,7 @@ func GetOrderById(db *sql.DB, id int) Order {
 		&delivery,
 	)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	order := Order{
 		ID:         id,
@@ -156,7 +156,7 @@ func GetOrderByCustomer(customer string, db *sql.DB) Order {
 		&delivery,
 	)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	order := Order{
 		ID:         id,

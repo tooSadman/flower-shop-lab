@@ -2,7 +2,8 @@ package user
 
 import (
 	"database/sql"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	_ "github.com/lib/pq"
 )
@@ -47,7 +48,7 @@ func AllUsers(db *sql.DB) ([]User, error) {
 			&card,
 		)
 		if err != nil {
-			log.Fatal(err)
+			log.Warn(err)
 		}
 		currentUser := User{
 			ID:                id,
@@ -74,7 +75,7 @@ func GetUserByID(id int, db *sql.DB) User {
 	`, id,
 	).Scan(&id, &email, &encrypted_password, &username, &card)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	user := User{
 		ID:                id,
@@ -99,7 +100,7 @@ func GetUserByEmail(email string, db *sql.DB) User {
 	`, email,
 	).Scan(&id, &email, &encrypted_password, &username, &card)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	user := User{
 		ID:                id,
@@ -122,7 +123,7 @@ func GetCardByName(cardName string, db *sql.DB) Card {
 	`, cardName,
 	).Scan(&id, &cardName, &discount)
 	if err != nil {
-		log.Fatal(err)
+		log.Warn(err)
 	}
 	card := Card{
 		ID:       id,
