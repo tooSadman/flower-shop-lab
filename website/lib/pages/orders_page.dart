@@ -16,7 +16,7 @@ class _OrdersPageState extends State<OrdersPage> {
   List<Order> _allOrders = []; 
 
   Future<void> _getOrders() async {
-    final response = await http.get('http://localhost:9000/orders/${widget.user.id}');
+    final response = await http.get('http://161.35.64.191:9000/orders/${widget.user.id}');
     setState(() {
       _allOrders = (json.decode(response.body) as List).map((i) =>
               Order.fromJson(i)).toList();

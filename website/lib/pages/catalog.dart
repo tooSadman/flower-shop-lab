@@ -18,7 +18,7 @@ class _CatalogPageState extends State<CatalogPage> {
   List<Flower> _allFlowers = []; 
 
   Future<void> _updateList() async {
-    final response = await http.get('http://localhost:9000/flowers');
+    final response = await http.get('http://161.35.64.191:9000/flowers');
     setState(() {
       _allFlowers = (json.decode(response.body) as List).map((i) =>
               Flower.fromJson(i)).toList();

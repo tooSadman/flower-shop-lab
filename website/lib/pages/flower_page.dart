@@ -26,7 +26,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
   UserCard card;
 
   Future<void> _getCard() async {
-    final response = await http.get('http://localhost:9000/cards/${widget.user.card}');
+    final response = await http.get('http://161.35.64.191:9000/cards/${widget.user.card}');
     var parsedJson = json.decode(response.body);
     setState(() {
       card = UserCard.fromJson(parsedJson);
@@ -34,7 +34,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
   }
 
   Future<void> _getFlower() async {
-    final response = await http.get('http://localhost:9000/flowers/${widget.id}');
+    final response = await http.get('http://161.35.64.191:9000/flowers/${widget.id}');
     var parsedJson = json.decode(response.body);
     setState(() {
       flower = Flower.fromJson(parsedJson);
@@ -44,7 +44,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
   }
 
   Future<void> _postOrder() async {
-    final response = await http.post('http://localhost:9000/orders/create?flowerName=${flower.name}&customer=${widget.user.id}&price=${_finalPrice}&packing=${_packingText}&delivery=${_deliveryText}');
+    final response = await http.post('http://161.35.64.191:9000/orders/create?flowerName=${flower.name}&customer=${widget.user.id}&price=${_finalPrice}&packing=${_packingText}&delivery=${_deliveryText}');
   }
 
   @override

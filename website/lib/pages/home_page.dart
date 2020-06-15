@@ -23,10 +23,14 @@ class _HomePageState extends State<HomePage> {
   User user;
 
   Future<void> _getUser() async {
-    final response = await http.get('http://localhost:9000/users/${widget.email}');
+    final response = await http.get('http://161.35.64.191:9000/users/${widget.email}');
     var parsedJson = json.decode(response.body);
     setState(() {
       user = User.fromJson(parsedJson);
+      //if (user.id == 0) {
+      //  print("User doesn't exists");
+      //  Navigator.pop(context,true);
+      //}
       _userId = user.id;
     });
   }
