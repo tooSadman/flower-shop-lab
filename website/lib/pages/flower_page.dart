@@ -142,7 +142,7 @@ class _FlowerDetailsState extends State<FlowerDetails> {
                         _postOrder();
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SuccessOrder()),
+                        MaterialPageRoute(builder: (context) => SuccessOrder(user: widget.user)),
                        );
                       },
                     )),

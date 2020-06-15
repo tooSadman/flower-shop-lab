@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/home_page.dart';
 import 'package:myapp/pages/login_page.dart';
+import 'package:myapp/model/user.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 
 class SuccessOrder extends StatefulWidget {
+  SuccessOrder({Key key, this.user}) : super(key: key);
+
+  final User user;
 
   @override
   _SuccessOrderState createState() => _SuccessOrderState();
@@ -52,7 +58,7 @@ body: Center(
                       onPressed: () {
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => HomePage(email: widget.user.email, pass: widget.user.password)),
                        );
                       },
                     )
